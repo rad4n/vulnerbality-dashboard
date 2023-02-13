@@ -74,10 +74,28 @@ export default class DataInput extends Vue {
     deleteFileRecord: (fileRecordOrRaw: FileRecord) => void
   }
 
-  mounted(): void {
+  public async getFileFromUrl(url: any, name: any, defaultType = "image/jpeg") {
+    const response = await fetch(url)
+    const data = await response.blob()
+    return new File([data], name, {
+      type: data.type || defaultType,
+    })
+  }
+
+  async mounted(): Promise<void> {
     if (this.presetUrl) {
       this.reportSource = ReportSource.Url
     }
+    const parsedReport = await fetch("/result/results.json")
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (json) {
+        return json
+      })
+    let vulnerabilityTargets: VulnerabilityReportTarget[]
+    vulnerabilityTargets = this.extractTargetsFromReport(parsedReport)
+    this.handleNewReport(vulnerabilityTargets)
   }
 
   get selectedVulnerabilities(): Vulnerability[] {
@@ -109,6 +127,8 @@ export default class DataInput extends Vue {
       typeof fileEvent.target.result === "string"
     ) {
       const parsedReport = JSON.parse(fileEvent.target.result)
+      //hope the above code can to change into parserport from result of read file from path
+      // console.log("parsedReport", parsedReport)
       vulnerabilityTargets = this.extractTargetsFromReport(parsedReport)
     }
     return vulnerabilityTargets
@@ -140,6 +160,7 @@ export default class DataInput extends Vue {
 
   @Watch("file")
   public onFileChange(files: FileRecord[]): void {
+    console.log("isi files", files)
     const selectedFile = files[0]
     const reader = new FileReader()
     reader.onload = (e) => {

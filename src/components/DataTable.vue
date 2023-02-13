@@ -151,6 +151,7 @@ export default class DataTable extends Vue {
     },
     { text: "InstalledVersion", value: "InstalledVersion" },
     { text: "FixedVersion", value: "FixedVersion" },
+    { text: "references", value: "References" },
   ]
 }
 </script>

@@ -1,12 +1,5 @@
 <template>
   <v-app>
-    <div id="forkongithub">
-      <a
-        href="https://github.com/dbsystel/trivy-vulnerability-explorer"
-        target="_blank"
-        >Fork me on GitHub</a
-      >
-    </div>
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">Trivy Vulnerability Explorer</div>
       <v-spacer></v-spacer>
